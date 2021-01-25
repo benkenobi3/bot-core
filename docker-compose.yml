@@ -1,0 +1,65 @@
+version: '3'
+services:
+  games-redis:
+    image: redis
+    container_name: redis
+    restart: always
+    networks:
+      - backend
+    expose:
+      - 6379
+
+  tasks-redis:
+    image: redis
+    container_name: redis
+    restart: always
+    networks:
+      - backend
+    expose:
+      - 6379
+
+  backend:
+    image: bot-core
+    build: ./
+    container_name: backend
+    environment:
+      - DB_NAME=coredb
+      - DB_HOST=host
+      - DB_PORT=port
+      - TASKS_REDIS_HOST=redis
+      - TASKS_REDIS_PORT=6379
+      - GAMES_REDIS_HOST=redis
+      - GAMES_REDIS_PORT=6379
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 80:80
+    depends_on:
+      - tasks-redis
+      - games-redis
+
+  dramatiq:
+    image: bot-core
+    container_name: dramatiq
+    environment:
+      - DB_NAME=coredb
+      - DB_HOST=host
+      - DB_PORT=port
+      - TASKS_REDIS_HOST=redis
+      - TASKS_REDIS_PORT=6379
+      - GAMES_REDIS_HOST=redis
+      - GAMES_REDIS_PORT=6379
+    command: worker
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 9090:9090
+    depends_on:
+      - tasks-redis
+      - games-redis
+
+networks:
+  backend:
+    name: backend_network
