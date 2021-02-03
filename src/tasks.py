@@ -1,9 +1,12 @@
 import logging
 import dramatiq
-from app.settings import TASKS_REDIS
+from dramatiq.brokers.redis import RedisBroker
+from settings import TASKS_REDIS
 
 
-# Connect to brocker
+logger = logging.getLogger()
+
+# Connect to broker
 dramatiq.set_broker(RedisBroker(host=TASKS_REDIS['HOST'], port=TASKS_REDIS['PORT']))
 
 

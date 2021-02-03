@@ -54,8 +54,8 @@ services:
     restart: always
     networks:
       - backend
-    ports:
-      - 9090:9090
+    expose:
+      - 9090
     depends_on:
       - tasks-redis
       - games-redis
