@@ -1,4 +1,10 @@
 import os
+from dotenv import load_dotenv
+
+
+# Dotenv loading
+# Dotenv https://pypi.org/project/python-dotenv/
+load_dotenv(dotenv_path="../.env")
 
 
 # Uvicorn serrings
