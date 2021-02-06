@@ -1,10 +1,4 @@
 import os
-from dotenv import load_dotenv
-
-
-# Dotenv loading
-# Dotenv https://pypi.org/project/python-dotenv/
-load_dotenv(dotenv_path="../.env")
 
 
 # Uvicorn serrings
@@ -24,6 +18,9 @@ WEBHOOK_SSL_CERT = './'
 WEBHOOK_SSL_PRIV = './'
 
 WEBHOOK_URL_PATH = f'/{BOT_TOKEN}/'
+
+WEBHOOK_URL = f'https://{WEBHOOK_HOST}:{WEBHOOK_PORT}{WEBHOOK_URL_PATH}'
+
 
 # Redis as broker
 # Redis https://redis.io/

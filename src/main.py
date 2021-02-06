@@ -1,7 +1,7 @@
 import time
 import uvicorn
 from bot.async_telebot import bot
-from settings import PORT, LOG_LEVEL, WEBHOOK_URL_PATH
+from settings import PORT, LOG_LEVEL, WEBHOOK_URL
 
 
 if __name__ == '__main__':
@@ -9,6 +9,7 @@ if __name__ == '__main__':
 
     time.sleep(0.1)
 
-    bot.set_webhook(url='', certificate=open(WEBHOOK_SSL_CERT, 'r'))
+    # Without certs
+    bot.set_webhook(url=WEBHOOK_URL)
 
     uvicorn.run('app.fastapi:app', host="0.0.0.0", port=PORT, log_level=LOG_LEVEL, reload=True)

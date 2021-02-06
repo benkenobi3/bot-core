@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: 'circleci/python:3.8'
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+          name: Install dependencies
+          command: |
+            pip install docker-compose
+            export COMPOSE_TLS_VERSION=TLSv1_2
+      - run:
+          name: Build application
+          command: |
+            docker-compose build
+      - run:
+          name: Copy nginx.conf
+          command: |
+            docker-compose up --no-start nginx
+            docker cp ./etc/nginx/nginx.conf nginx:/etc/nginx/nginx.conf
+      - run:
+          name: Create remote docker context
+          command: |
+            docker context create remote --docker host=ssh://$DOCKER_USERHOST
+            ssh -o StrictHostKeyChecking=no $DOCKER_USERHOST uptime
+            docker context use remote
+      - run:
+          name: Up containers on remote context
+          command: |
+            docker-compose ‐‐context remote up -d --no-recreate

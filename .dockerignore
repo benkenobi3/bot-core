@@ -7,3 +7,9 @@ media/*
 chart/
 *.tar
 database/
+env/
+Dockerfile
+.gitignore
+.env.example
+docker-compose.yml
+README.md 
